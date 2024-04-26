@@ -1,17 +1,10 @@
-import 'package:collection/collection.dart';
-import 'package:poc_sc_assistant/models/home_os_profile.dart' as model;
+import 'package:poc_sc_assistant/models/home.dart' as model;
 
 class HomePagePresenter {
   HomePagePresenter({required this.homes});
 
-  factory HomePagePresenter.fromModel({
-    required List<model.HomeOSProfile> homeOSProfiles,
-  }) {
-    return HomePagePresenter(
-      homes: homeOSProfiles
-          .map((homeOSProfile) => Home.fromModel(homeOSProfile: homeOSProfile))
-          .toList(),
-    );
+  factory HomePagePresenter.fromModel({required List<model.Home> homes}) {
+    return HomePagePresenter(homes: homes.map(Home.fromModel).toList());
   }
 
   final List<Home> homes;
@@ -25,16 +18,12 @@ class Home {
     this.recentlyUsedScene,
   });
 
-  factory Home.fromModel({required model.HomeOSProfile homeOSProfile}) {
-    final recentlyUsedScene = homeOSProfile.scenes.firstWhereOrNull(
-      (scene) => scene.id == homeOSProfile.recentlyUsedSceneId,
-    );
-
+  factory Home.fromModel(model.Home home) {
     return Home(
-      id: homeOSProfile.home.id,
-      addressNumber: homeOSProfile.home.addressNumber,
-      haveVisitor: homeOSProfile.haveVisitor,
-      recentlyUsedScene: recentlyUsedScene?.name,
+      id: home.id,
+      addressNumber: home.addressNumber,
+      haveVisitor: home.haveVisitor,
+      recentlyUsedScene: home.recentlyUsedScene?.name,
     );
   }
 

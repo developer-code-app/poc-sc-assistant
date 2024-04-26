@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:poc_sc_assistant/models/home_os_profile.dart' as model;
+import 'package:poc_sc_assistant/models/home.dart' as model;
+import 'package:poc_sc_assistant/models/mock_data.dart';
 import 'package:poc_sc_assistant/pages/home/home_page_presenter.dart';
 
 part 'home_page_event.dart';
@@ -32,7 +33,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     DataLoadedEvent event,
     Emitter<_State> emit,
   ) {
-    emit(LoadSuccessState(homeOSProfiles: model.MockData.homeOSProfiles));
+    emit(LoadSuccessState(homes: MockData.homes));
   }
 
   FutureOr<void> _onErrorOccurredEvent(
@@ -56,13 +57,13 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     final state = this.state;
 
     if (state is LoadSuccessState) {
-      final homeOSProfiles = state.homeOSProfiles.map((profile) {
-        return profile.home.id == event.homeId
-            ? profile.copyWith(haveVisitor: !profile.haveVisitor)
-            : profile.copyWith(haveVisitor: false);
+      final homes = state.homes.map((home) {
+        return home.id == event.homeId
+            ? home.copyWith(haveVisitor: !home.haveVisitor)
+            : home.copyWith(haveVisitor: false);
       }).toList();
 
-      emit(LoadSuccessState(homeOSProfiles: homeOSProfiles));
+      emit(LoadSuccessState(homes: homes));
     }
   }
 }

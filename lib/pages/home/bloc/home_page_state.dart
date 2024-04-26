@@ -8,10 +8,10 @@ class InitialState extends _State {}
 class LoadInProgressState extends _State {}
 
 class LoadSuccessState extends _State {
-  LoadSuccessState({required this.homeOSProfiles})
-      : presenter = HomePagePresenter.fromModel(homeOSProfiles: homeOSProfiles);
+  LoadSuccessState({required this.homes})
+      : presenter = HomePagePresenter.fromModel(homes: homes);
 
-  final List<model.HomeOSProfile> homeOSProfiles;
+  final List<model.Home> homes;
   final HomePagePresenter presenter;
 }
 

@@ -1,14 +1,13 @@
-import 'package:poc_sc_assistant/models/home_os_profile.dart' as model;
+import 'package:poc_sc_assistant/gen/assets.gen.dart';
+import 'package:poc_sc_assistant/models/home.dart' as home_model;
+import 'package:poc_sc_assistant/models/mock_data.dart';
+import 'package:poc_sc_assistant/models/scene.dart' as scene_model;
 
 class ScenesPagePresenter {
   ScenesPagePresenter({required this.homes});
 
-  factory ScenesPagePresenter.fromModel(
-    List<model.HomeOSProfile> homeOSProfiles,
-  ) {
-    return ScenesPagePresenter(
-      homes: homeOSProfiles.map(Home.fromModel).toList(),
-    );
+  factory ScenesPagePresenter.fromModel(List<home_model.Home> homes) {
+    return ScenesPagePresenter(homes: homes.map(Home.fromModel).toList());
   }
 
   final List<Home> homes;
@@ -20,10 +19,11 @@ class Home {
     required this.scenes,
   });
 
-  factory Home.fromModel(model.HomeOSProfile profile) {
+  factory Home.fromModel(home_model.Home home) {
     return Home(
-        addressNumber: profile.home.addressNumber,
-        scenes: profile.scenes.map(Scene.fromModel).toList());
+      addressNumber: home.addressNumber,
+      scenes: MockData.scenes.map(Scene.fromModel).toList(),
+    );
   }
 
   final String addressNumber;
@@ -33,16 +33,16 @@ class Home {
 class Scene {
   Scene({
     required this.name,
-    required this.iconUrl,
+    required this.icon,
   });
 
-  factory Scene.fromModel(model.Scene scene) {
+  factory Scene.fromModel(scene_model.Scene scene) {
     return Scene(
       name: scene.name,
-      iconUrl: scene.iconUrl,
+      icon: scene.icon,
     );
   }
 
   final String name;
-  final String iconUrl;
+  final AssetGenImage icon;
 }

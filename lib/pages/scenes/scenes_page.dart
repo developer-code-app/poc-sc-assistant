@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:poc_sc_assistant/gen/assets.gen.dart';
 import 'package:poc_sc_assistant/pages/scenes/bloc/scenes_page_bloc.dart';
 import 'package:poc_sc_assistant/pages/scenes/scenes_page_presenter.dart';
 import 'package:poc_sc_assistant/widgets/page/page_scaffold.dart';
@@ -110,7 +111,7 @@ class ScenesPage extends StatelessWidget {
           children: [
             _buildSceneIcon(
               context,
-              iconUrl: scene.iconUrl,
+              icon: scene.icon,
             ),
             const SizedBox(height: 16),
             _buildSceneName(context, name: scene.name),
@@ -136,19 +137,23 @@ class ScenesPage extends StatelessWidget {
 
   Widget _buildSceneIcon(
     BuildContext context, {
-    required String iconUrl,
+    required AssetGenImage icon,
   }) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Image.network(
+      child: icon.image(
         width: 32,
         height: 32,
-        iconUrl,
-        fit: BoxFit.fitHeight,
-        errorBuilder: (context, exception, stackTrace) {
-          return Container(color: Colors.grey);
-        },
       ),
+      // child: Image.network(
+      // width: 32,
+      // height: 32,
+      //   iconUrl,
+      //   fit: BoxFit.fitHeight,
+      //   errorBuilder: (context, exception, stackTrace) {
+      //     return Container(color: Colors.grey);
+      //   },
+      // ),
     );
   }
 }
