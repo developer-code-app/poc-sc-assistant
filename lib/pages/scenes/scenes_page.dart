@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:poc_sc_assistant/gen/assets.gen.dart';
 import 'package:poc_sc_assistant/pages/scenes/bloc/scenes_page_bloc.dart';
+import 'package:poc_sc_assistant/pages/scenes/scenes_page_presenter.dart';
 import 'package:poc_sc_assistant/widgets/page/page_scaffold.dart';
 
 class ScenesPage extends StatelessWidget {
@@ -14,7 +14,7 @@ class ScenesPage extends StatelessWidget {
       child: BlocBuilder<ScenesPageBloc, ScenesPageState>(
         builder: (context, state) {
           if (state is LoadSuccessState) {
-            return _buildLoadSuccess(context);
+            return _buildLoadSuccess(context, state);
           } else if (state is LoadInProgressState) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is LoadFailureState) {
@@ -27,41 +27,34 @@ class ScenesPage extends StatelessWidget {
     );
   }
 
-  Widget _buildLoadSuccess(BuildContext context) {
-    return SingleChildScrollView(
+  Widget _buildLoadSuccess(
+    BuildContext context,
+    LoadSuccessState state,
+  ) {
+    final presenter = state.presenter;
+
+    return ListView(
       padding: const EdgeInsets.symmetric(
         horizontal: 20,
         vertical: 16,
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildHomeAddress(context, address: '889/1'),
+      children: presenter.homes.map((home) {
+        return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          _buildHomeAddress(context, addressNumber: home.addressNumber),
           const SizedBox(height: 16),
-          GridView.count(
-            shrinkWrap: true,
-            childAspectRatio: 168 / 131,
-            crossAxisCount: 2,
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
-            physics: const NeverScrollableScrollPhysics(),
-            children: [
-              _buildSceneCard(context),
-              _buildSceneCard(context),
-              _buildSceneCard(context),
-            ],
-          ),
-        ],
-      ),
+          _buildScenes(context, scenes: home.scenes),
+          const SizedBox(height: 24),
+        ]);
+      }).toList(),
     );
   }
 
   Widget _buildHomeAddress(
     BuildContext context, {
-    required String address,
+    required String addressNumber,
   }) {
     return Text(
-      'บ้านตัวอย่าง $address',
+      'บ้านตัวอย่าง $addressNumber',
       style: const TextStyle(
         color: Color(0xFF202020),
         fontSize: 24,
@@ -70,7 +63,27 @@ class ScenesPage extends StatelessWidget {
     );
   }
 
-  Widget _buildSceneCard(BuildContext context) {
+  Widget _buildScenes(
+    BuildContext context, {
+    required List<Scene> scenes,
+  }) {
+    return GridView.count(
+      shrinkWrap: true,
+      childAspectRatio: 168 / 131,
+      crossAxisCount: 2,
+      crossAxisSpacing: 16,
+      mainAxisSpacing: 16,
+      physics: const NeverScrollableScrollPhysics(),
+      children: scenes
+          .map((scene) => _buildSceneCard(context, scene: scene))
+          .toList(),
+    );
+  }
+
+  Widget _buildSceneCard(
+    BuildContext context, {
+    required Scene scene,
+  }) {
     return AspectRatio(
       aspectRatio: 1,
       child: Container(
@@ -95,19 +108,25 @@ class ScenesPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildSceneIcon(context),
+            _buildSceneIcon(
+              context,
+              iconUrl: scene.iconUrl,
+            ),
             const SizedBox(height: 16),
-            _buildSceneName(context),
+            _buildSceneName(context, name: scene.name),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildSceneName(BuildContext context) {
-    return const Text(
-      'Standby',
-      style: TextStyle(
+  Widget _buildSceneName(
+    BuildContext context, {
+    required String name,
+  }) {
+    return Text(
+      name,
+      style: const TextStyle(
         color: Color(0xFF202020),
         fontSize: 18,
         fontWeight: FontWeight.w700,
@@ -115,9 +134,21 @@ class ScenesPage extends StatelessWidget {
     );
   }
 
-  Widget _buildSceneIcon(BuildContext context) {
-    return Container(
-      child: Assets.icons.standby.svg(),
+  Widget _buildSceneIcon(
+    BuildContext context, {
+    required String iconUrl,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Image.network(
+        width: 32,
+        height: 32,
+        iconUrl,
+        fit: BoxFit.fitHeight,
+        errorBuilder: (context, exception, stackTrace) {
+          return Container(color: Colors.grey);
+        },
+      ),
     );
   }
 }

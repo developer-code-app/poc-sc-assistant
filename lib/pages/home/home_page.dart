@@ -62,7 +62,7 @@ class HomePage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildHomeAddress(context, address: home.addressNumber),
+                _buildHomeAddress(context, addressNumber: home.addressNumber),
                 const SizedBox(height: 4),
                 if (recentlyUsedScene != null)
                   _buildRecentlyUsedScene(
@@ -109,10 +109,10 @@ class HomePage extends StatelessWidget {
 
   Widget _buildHomeAddress(
     BuildContext context, {
-    required String address,
+    required String addressNumber,
   }) {
     return Text(
-      'บ้านตัวอย่าง $address',
+      'บ้านตัวอย่าง $addressNumber',
       style: const TextStyle(
         color: Color(0xFF202020),
         fontSize: 18,

@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:poc_sc_assistant/models/home_os_profile.dart' as model;
+import 'package:poc_sc_assistant/pages/scenes/scenes_page_presenter.dart';
 
 part 'scenes_page_event.dart';
 part 'scenes_page_state.dart';
@@ -29,7 +31,7 @@ class ScenesPageBloc extends Bloc<_Event, _State> {
     DataLoadedEvent event,
     Emitter<_State> emit,
   ) {
-    emit(LoadSuccessState());
+    emit(LoadSuccessState(homeOSProfiles: model.MockData.homeOSProfiles));
   }
 
   FutureOr<void> _onErrorOccurredEvent(
