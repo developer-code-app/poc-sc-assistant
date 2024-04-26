@@ -16,11 +16,7 @@ class ErrorOccurredEvent extends _Event {
 class DataLoadingRetriedEvent extends _Event {}
 
 class SceneActionRequestedEvent extends _Event {
-  SceneActionRequestedEvent({
-    required this.homeId,
-    required this.isSceneStarted,
-  });
+  SceneActionRequestedEvent({required this.homeId});
 
   final String homeId;
-  final bool isSceneStarted;
 }

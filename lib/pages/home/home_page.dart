@@ -51,6 +51,8 @@ class HomePage extends StatelessWidget {
     BuildContext context, {
     required presenter.Home home,
   }) {
+    final recentlyUsedScene = home.recentlyUsedScene;
+
     return _buildCardDecoration(
       context,
       child: Row(
@@ -60,9 +62,13 @@ class HomePage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildHomeAddress(context, address: home.address),
+                _buildHomeAddress(context, address: home.addressNumber),
                 const SizedBox(height: 4),
-                _buildCurrentScene(context, currentScene: home.currentScene)
+                if (recentlyUsedScene != null)
+                  _buildRecentlyUsedScene(
+                    context,
+                    recentlyUsedScene: recentlyUsedScene,
+                  )
               ],
             ),
           ),
@@ -70,7 +76,7 @@ class HomePage extends StatelessWidget {
           _buildActionSceneButton(
             context,
             homeId: home.id,
-            isSceneStarted: home.isSceneStarted,
+            haveVisitor: home.haveVisitor,
           )
         ],
       ),
@@ -115,12 +121,12 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildCurrentScene(
+  Widget _buildRecentlyUsedScene(
     BuildContext context, {
-    required String currentScene,
+    required String recentlyUsedScene,
   }) {
     return Text(
-      'Scene ล่าสุด : $currentScene',
+      'Scene ล่าสุด : $recentlyUsedScene',
       style: const TextStyle(
         color: Color(0xFF828282),
         fontSize: 18,
@@ -132,19 +138,14 @@ class HomePage extends StatelessWidget {
   Widget _buildActionSceneButton(
     BuildContext context, {
     required String homeId,
-    required bool isSceneStarted,
+    required bool haveVisitor,
   }) {
-    final color = isSceneStarted ? Colors.red : const Color(0xFF3555FF);
-    final label = isSceneStarted ? 'Stop' : 'Start';
+    final color = haveVisitor ? Colors.red : const Color(0xFF3555FF);
+    final label = haveVisitor ? 'Stop' : 'Start';
     final bloc = context.read<HomePageBloc>();
 
     return GestureDetector(
-      onTap: () => bloc.add(
-        SceneActionRequestedEvent(
-          homeId: homeId,
-          isSceneStarted: isSceneStarted,
-        ),
-      ),
+      onTap: () => bloc.add(SceneActionRequestedEvent(homeId: homeId)),
       child: Container(
         width: 90,
         padding: const EdgeInsets.all(16),

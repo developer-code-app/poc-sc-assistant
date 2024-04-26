@@ -29,6 +29,8 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   bloc: ^8.1.4
+  collection: ^1.17.2
+  copy_with_extension: ^5.0.4
 
   flutter:
     sdk: flutter
@@ -44,6 +46,7 @@ dependencies:
 
 dev_dependencies:
   build_runner: any
+  copy_with_extension_gen: ^5.0.4
   flutter_gen_runner: ^5.2.0
   json_serializable: ^6.0.1
   retrofit_generator: ^4.2.0

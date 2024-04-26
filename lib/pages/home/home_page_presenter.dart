@@ -1,13 +1,16 @@
-import 'package:poc_sc_assistant/pages/home/bloc/home_page_bloc.dart' as model;
+import 'package:collection/collection.dart';
+import 'package:poc_sc_assistant/models/home_os_profile.dart' as model;
 
 class HomePagePresenter {
   HomePagePresenter({required this.homes});
 
   factory HomePagePresenter.fromModel({
-    required List<model.Home> homes,
+    required List<model.HomeOSProfile> homeOSProfiles,
   }) {
     return HomePagePresenter(
-      homes: homes.map((home) => Home.fromModel(home: home)).toList(),
+      homes: homeOSProfiles
+          .map((homeOSProfile) => Home.fromModel(homeOSProfile: homeOSProfile))
+          .toList(),
     );
   }
 
@@ -17,22 +20,26 @@ class HomePagePresenter {
 class Home {
   Home({
     required this.id,
-    required this.address,
-    required this.currentScene,
-    this.isSceneStarted = false,
+    required this.addressNumber,
+    required this.haveVisitor,
+    this.recentlyUsedScene,
   });
 
-  factory Home.fromModel({required model.Home home}) {
+  factory Home.fromModel({required model.HomeOSProfile homeOSProfile}) {
+    final recentlyUsedScene = homeOSProfile.scenes.firstWhereOrNull(
+      (scene) => scene.id == homeOSProfile.recentlyUsedSceneId,
+    );
+
     return Home(
-      id: home.id,
-      address: home.address,
-      currentScene: home.currentScene,
-      isSceneStarted: home.isSceneStarted,
+      id: homeOSProfile.home.id,
+      addressNumber: homeOSProfile.home.addressNumber,
+      haveVisitor: homeOSProfile.haveVisitor,
+      recentlyUsedScene: recentlyUsedScene?.name,
     );
   }
 
   final String id;
-  final String address;
-  final String currentScene;
-  bool isSceneStarted;
+  final String addressNumber;
+  final String? recentlyUsedScene;
+  final bool haveVisitor;
 }

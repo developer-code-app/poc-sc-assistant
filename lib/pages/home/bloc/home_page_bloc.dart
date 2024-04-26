@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:poc_sc_assistant/models/home_os_profile.dart' as model;
 import 'package:poc_sc_assistant/pages/home/home_page_presenter.dart';
 
 part 'home_page_event.dart';
@@ -31,14 +32,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     DataLoadedEvent event,
     Emitter<_State> emit,
   ) {
-    final homes = [
-      Home(id: '1', address: '889/1', currentScene: 'Standby'),
-      Home(id: '2', address: '889/2', currentScene: 'Standby'),
-      Home(id: '3', address: '889/3', currentScene: 'Standby'),
-      Home(id: '4', address: '889/4', currentScene: 'Active'),
-    ];
-
-    emit(LoadSuccessState(homes: homes));
+    emit(LoadSuccessState(homeOSProfiles: model.MockData.homeOSProfiles));
   }
 
   FutureOr<void> _onErrorOccurredEvent(
@@ -62,32 +56,13 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     final state = this.state;
 
     if (state is LoadSuccessState) {
-      final homes = state.homes;
+      final homeOSProfiles = state.homeOSProfiles.map((profile) {
+        return profile.home.id == event.homeId
+            ? profile.copyWith(haveVisitor: !profile.haveVisitor)
+            : profile.copyWith(haveVisitor: false);
+      }).toList();
 
-      homes.where(
-        (home) {
-          return home.id == event.homeId
-              ? home.isSceneStarted = !event.isSceneStarted
-              : home.isSceneStarted = false;
-        },
-      ).toList();
-
-      emit(LoadSuccessState(homes: homes));
+      emit(LoadSuccessState(homeOSProfiles: homeOSProfiles));
     }
   }
-}
-
-// TODO(Nolthicha): remove this when implement model.
-class Home {
-  Home({
-    required this.id,
-    required this.address,
-    required this.currentScene,
-    this.isSceneStarted = false,
-  });
-
-  final String id;
-  final String address;
-  final String currentScene;
-  bool isSceneStarted;
 }
