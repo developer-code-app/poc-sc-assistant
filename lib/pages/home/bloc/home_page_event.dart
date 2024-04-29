@@ -5,7 +5,11 @@ sealed class HomePageEvent {}
 
 class StartedEvent extends _Event {}
 
-class DataLoadedEvent extends _Event {}
+class DataLoadedEvent extends _Event {
+  DataLoadedEvent(this.homes);
+
+  final List<model.Home> homes;
+}
 
 class ErrorOccurredEvent extends _Event {
   ErrorOccurredEvent(this.error);

@@ -1,9 +1,14 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:poc_sc_assistant/gen/assets.gen.dart';
 
 enum Scene {
+  @JsonValue('STANDBY')
   standby,
+  @JsonValue('ACTIVE')
   active,
+  @JsonValue('TURN_OFF_ALL')
   turnOffAll,
+  @JsonValue('UNKNOWN')
   unknown;
 
   String get name {

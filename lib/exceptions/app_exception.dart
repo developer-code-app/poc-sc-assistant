@@ -7,6 +7,14 @@ class AppException implements Exception {
   AppException.message(String message) : this._(null, message);
   String get prefix => runtimeType.toString();
 
+  factory AppException.fromError(Object? error) {
+    if (error is AppException) {
+      return error;
+    } else {
+      return UnexpectedException();
+    }
+  }
+
   final dynamic error;
   final String message;
   static String cleanErrorMessage(Object? error) {
@@ -47,4 +55,9 @@ class AppException implements Exception {
       return 'Something went wrong.';
     }
   }
+}
+
+class UnexpectedException extends AppException {
+  @override
+  String get message => 'Something went wrong.\nPlease try again later.';
 }
