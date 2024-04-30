@@ -6,8 +6,12 @@ sealed class HomePageEvent {}
 class StartedEvent extends _Event {}
 
 class DataLoadedEvent extends _Event {
-  DataLoadedEvent(this.homes);
+  DataLoadedEvent({
+    required this.projectName,
+    required this.homes,
+  });
 
+  final String projectName;
   final List<model.Home> homes;
 }
 

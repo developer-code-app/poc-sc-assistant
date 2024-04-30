@@ -11,21 +11,18 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PageScaffold(
-      title: 'BB-WGS',
-      child: BlocBuilder<HomePageBloc, HomePageState>(
-        builder: (context, state) {
-          if (state is LoadSuccessState) {
-            return _buildLoadSuccess(context, state);
-          } else if (state is LoadInProgressState) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state is LoadFailureState) {
-            return Container();
-          } else {
-            return Container();
-          }
-        },
-      ),
+    return BlocBuilder<HomePageBloc, HomePageState>(
+      builder: (context, state) {
+        if (state is LoadSuccessState) {
+          return _buildLoadSuccess(context, state);
+        } else if (state is LoadInProgressState) {
+          return _buildLoadInProgress(context, state);
+        } else if (state is LoadFailureState) {
+          return _buildPageScaffold(title: '', child: Container());
+        } else {
+          return _buildPageScaffold(title: '', child: Container());
+        }
+      },
     );
   }
 
@@ -33,17 +30,40 @@ class HomePage extends StatelessWidget {
     BuildContext context,
     LoadSuccessState state,
   ) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 16,
+    return _buildPageScaffold(
+      title: state.presenter.projectName,
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 16,
+        ),
+        child: Column(
+          children: state.presenter.homes
+              .map((home) => _buildHomeCard(context, home: home))
+              .intersperse(const SizedBox(height: 16))
+              .toList(),
+        ),
       ),
-      child: Column(
-        children: state.presenter.homes
-            .map((home) => _buildHomeCard(context, home: home))
-            .intersperse(const SizedBox(height: 16))
-            .toList(),
-      ),
+    );
+  }
+
+  Widget _buildLoadInProgress(
+    BuildContext context,
+    LoadInProgressState state,
+  ) {
+    return _buildPageScaffold(
+      title: state.projectName,
+      child: const Center(child: CircularProgressIndicator()),
+    );
+  }
+
+  Widget _buildPageScaffold({
+    required String title,
+    required Widget child,
+  }) {
+    return PageScaffold(
+      title: title,
+      child: child,
     );
   }
 

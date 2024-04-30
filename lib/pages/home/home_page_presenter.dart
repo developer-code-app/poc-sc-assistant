@@ -1,12 +1,22 @@
 import 'package:poc_sc_assistant/models/home.dart' as model;
 
 class HomePagePresenter {
-  HomePagePresenter({required this.homes});
+  HomePagePresenter({
+    required this.projectName,
+    required this.homes,
+  });
 
-  factory HomePagePresenter.fromModel({required List<model.Home> homes}) {
-    return HomePagePresenter(homes: homes.map(Home.fromModel).toList());
+  factory HomePagePresenter.fromModel({
+    required String projectName,
+    required List<model.Home> homes,
+  }) {
+    return HomePagePresenter(
+      projectName: projectName,
+      homes: homes.map(Home.fromModel).toList(),
+    );
   }
 
+  final String projectName;
   final List<Home> homes;
 }
 

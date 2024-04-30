@@ -3,9 +3,12 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:poc_sc_assistant/providers/api/services/home_service.dart';
+import 'package:poc_sc_assistant/providers/api/services/user_service.dart';
 
 class ApiProvider {
-  ApiProvider(Dio dio) : home = HomeService(dio);
+  ApiProvider(Dio dio)
+      : home = HomeService(dio),
+        user = UserService(dio);
 
   factory ApiProvider.basic() {
     const baseUrl = 'http://m1mini.local:8081/sc_assistant/';
@@ -50,4 +53,5 @@ class ApiProvider {
       );
 
   final HomeService home;
+  final UserService user;
 }

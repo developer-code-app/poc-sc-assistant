@@ -10,7 +10,9 @@ import 'package:poc_sc_assistant/app/themes/light_theme.dart';
 import 'package:poc_sc_assistant/cubits/app_theme_cubit.dart';
 import 'package:poc_sc_assistant/cubits/home_cubit.dart' as home_cubit;
 import 'package:poc_sc_assistant/cubits/router_cubit.dart';
+import 'package:poc_sc_assistant/cubits/user_profile_cubit.dart';
 import 'package:poc_sc_assistant/repositories/home_repository.dart';
+import 'package:poc_sc_assistant/repositories/user_repository.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -26,6 +28,11 @@ class App extends StatelessWidget {
         BlocProvider<home_cubit.HomeCubit>(
           create: (context) => home_cubit.HomeCubit(
             repository: context.read<HomeRepository>(),
+          )..loadData(),
+        ),
+        BlocProvider<UserProfileCubit>(
+          create: (context) => UserProfileCubit(
+            repository: context.read<UserRepository>(),
           )..loadData(),
         ),
       ],
