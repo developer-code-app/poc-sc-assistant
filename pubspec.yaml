@@ -29,23 +29,31 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   bloc: ^8.1.4
+  collection: ^1.17.2
+  copy_with_extension: ^5.0.4
+  dio: ^5.4.3+1
+  equatable: ^2.0.5
 
   flutter:
     sdk: flutter
 
   flutter_bloc: ^8.1.5
+  flutter_svg: ^2.0.10+1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
 
   dfunc: ^0.9.0
+  json_annotation: ^4.9.0
+  retrofit: ^4.1.0
 
 dev_dependencies:
   build_runner: any
+  copy_with_extension_gen: ^5.0.4
   flutter_gen_runner: ^5.2.0
   json_serializable: ^6.0.1
-  retrofit_generator: ^4.2.0
+  retrofit_generator: ^8.1.0
 
   flutter_test:
     sdk: flutter
@@ -72,6 +80,8 @@ flutter:
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

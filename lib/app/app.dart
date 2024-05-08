@@ -8,7 +8,11 @@ import 'package:poc_sc_assistant/app/router/paths/main_tab_bar_navigator_route_p
 import 'package:poc_sc_assistant/app/router/route_path.dart';
 import 'package:poc_sc_assistant/app/themes/light_theme.dart';
 import 'package:poc_sc_assistant/cubits/app_theme_cubit.dart';
+import 'package:poc_sc_assistant/cubits/home_cubit.dart' as home_cubit;
 import 'package:poc_sc_assistant/cubits/router_cubit.dart';
+import 'package:poc_sc_assistant/cubits/user_profile_cubit.dart';
+import 'package:poc_sc_assistant/repositories/home_repository.dart';
+import 'package:poc_sc_assistant/repositories/user_repository.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -20,6 +24,16 @@ class App extends StatelessWidget {
           create: (context) => AppThemeCubit(
             theme: LightTheme(pageSize: PageSize.regular),
           ),
+        ),
+        BlocProvider<home_cubit.HomeCubit>(
+          create: (context) => home_cubit.HomeCubit(
+            repository: context.read<HomeRepository>(),
+          )..loadData(),
+        ),
+        BlocProvider<UserProfileCubit>(
+          create: (context) => UserProfileCubit(
+            repository: context.read<UserRepository>(),
+          )..loadData(),
         ),
       ],
       child: BlocBuilder<AppBloc, AppState>(
@@ -72,14 +86,17 @@ class App extends StatelessWidget {
     BuildContext context, {
     required RoutePath rootRoutePath,
   }) {
-    return BlocProvider<RouterCubit>(
-      create: (context) => RouterCubit(rootRoutePath),
-      child: Builder(
-        builder: (context) => Router(
-          routerDelegate: AppRouterDelegate(
-            navigatorKey: (context.read<RouterCubit>()..restart(rootRoutePath))
-                .navigatorKey,
-          ),
+    final routerCubit = context.read<RouterCubit>();
+    final rootPath = routerCubit.state.first.paths.first;
+
+    if (rootPath.runtimeType != rootRoutePath.runtimeType) {
+      routerCubit.restart(rootRoutePath);
+    }
+
+    return Builder(
+      builder: (context) => Router(
+        routerDelegate: AppRouterDelegate(
+          navigatorKey: routerCubit.navigatorKey,
         ),
       ),
     );

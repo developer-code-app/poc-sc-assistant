@@ -36,7 +36,7 @@ class _MainTabBarNavigatorPageState extends State<MainTabBarNavigatorPage> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home_work_rounded),
-            label: 'Home',
+            label: 'Visitors',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list_alt_rounded),
